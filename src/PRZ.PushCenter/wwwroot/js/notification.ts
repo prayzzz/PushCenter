@@ -112,7 +112,7 @@ const PushNotifications = (function () {
                     writeToConsole('Failed to retrieve Public Key: ' + error);
                 });
         }
-    }
+    }                                                                                                                           
 
     function subscribeForPushNotificationsInternal() {
         pushServiceWorkerRegistration.pushManager.subscribe({

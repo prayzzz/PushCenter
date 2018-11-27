@@ -1,6 +1,9 @@
 .idea/
+.vs/
 
 [Oo]bj
 [Bb]in
 
 node_modules/
+
+appsettings.development.json
