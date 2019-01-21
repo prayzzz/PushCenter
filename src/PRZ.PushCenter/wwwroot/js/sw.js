@@ -1,10 +1,10 @@
-self.addEventListener('push', function (event) {
-    console.log("Push triggered");
-    console.log(event);
+self.addEventListener('push', event => {
+    const pushMessage = event.data.json();
 
     event.waitUntil(
-        self.registration.showNotification("My Notification", {
-            body: "Notification"
+        self.registration.showNotification(pushMessage.Title, {
+            body: pushMessage.Message,
+            icon: pushMessage.IconUrl
         })
     )
 });

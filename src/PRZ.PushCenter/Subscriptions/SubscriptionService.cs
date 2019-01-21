@@ -42,6 +42,11 @@ namespace PRZ.PushCenter.Subscriptions
             return _dbContext.Subscriptions.Where(s => s.Endpoint == endpoint).Select(s => s.SubscriptionType);
         }
 
+        public IEnumerable<Subscription> Find(SubscriptionType subscriptionType)
+        {
+            return _dbContext.Subscriptions.Where(s => s.SubscriptionType == subscriptionType);
+        }
+
         public Task Delete(PushSubscription pushSubscription, SubscriptionType subscriptionType)
         {
             _logger.LogInformation($"Deleting '{subscriptionType}' subscription for '{pushSubscription.Endpoint}'");

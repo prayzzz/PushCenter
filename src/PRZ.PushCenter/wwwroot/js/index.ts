@@ -16,10 +16,14 @@ renderSubs();
 async function renderSubs() {
     const subscription = await pushCenter.getSubscription();
     const typesPromise = subscriptionService.getSubscriptionTypes();
-    const activeSubsPromise = subscriptionService.getActiveSubscription(subscription.endpoint);
+    let activeSubs = [];
+
+    if (subscription) {
+        const activeSubsPromise = subscriptionService.getActiveSubscription(subscription.endpoint);
+        activeSubs = await activeSubsPromise;
+    }
 
     const types = await typesPromise;
-    const activeSubs = await activeSubsPromise;
 
     const root = document.querySelector("#subscriptions");
     while (root.firstChild) {
