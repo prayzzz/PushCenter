@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Lib.Net.Http.WebPush;
@@ -19,11 +19,11 @@ namespace PRZ.PushCenter.Subscriptions
 
         public Task Save(PushSubscription pushSubscription, SubscriptionType subscriptionType)
         {
-            _logger.LogInformation($"Adding {subscriptionType} subscription for {pushSubscription.Endpoint}");
-            
-            if (_dbContext.Subscriptions.Any(s => s.Endpoint == pushSubscription.Endpoint))
+            _logger.LogInformation($"Adding '{subscriptionType}' subscription for '{pushSubscription.Endpoint}'");
+
+            if (_dbContext.Subscriptions.Any(s => s.Endpoint == pushSubscription.Endpoint && s.SubscriptionType == subscriptionType))
             {
-                throw new InvalidOperationException($"{subscriptionType} subscription for {pushSubscription.Endpoint} already known");
+                return Task.CompletedTask;
             }
 
             var subscription = new Subscription(
@@ -33,16 +33,21 @@ namespace PRZ.PushCenter.Subscriptions
                 subscriptionType
             );
 
-            
             _dbContext.Add(subscription);
             return _dbContext.SaveChangesAsync();
         }
 
-        public Task Delete(string endpoint, SubscriptionType subscriptionType)
+        public IEnumerable<SubscriptionType> Find(string endpoint)
         {
-            _logger.LogInformation($"Adding {subscriptionType} subscription for {endpoint}");
-            
-            var subscriptions = _dbContext.Subscriptions.Where(s => s.Endpoint == endpoint && s.SubscriptionType == subscriptionType);
+            return _dbContext.Subscriptions.Where(s => s.Endpoint == endpoint).Select(s => s.SubscriptionType);
+        }
+
+        public Task Delete(PushSubscription pushSubscription, SubscriptionType subscriptionType)
+        {
+            _logger.LogInformation($"Deleting '{subscriptionType}' subscription for '{pushSubscription.Endpoint}'");
+
+            var subscriptions = _dbContext.Subscriptions
+                                          .Where(s => s.Endpoint == pushSubscription.Endpoint && s.SubscriptionType == subscriptionType);
 
             _dbContext.Subscriptions.RemoveRange(subscriptions);
             return _dbContext.SaveChangesAsync();

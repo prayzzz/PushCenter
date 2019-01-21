@@ -1,28 +1,21 @@
 namespace PRZ.PushCenter.Subscriptions
 {
-    public class Subscription
+    public class Subscription : Entity
     {
-        public Subscription(string endpoint, string auth, string p256dh, SubscriptionType subscriptionType)
+        public Subscription(string endpoint, string auth, string p256Dh, SubscriptionType subscriptionType)
         {
             Endpoint = endpoint;
             Auth = auth;
-            P256DH = p256dh;
+            P256Dh = p256Dh;
             SubscriptionType = subscriptionType;
         }
 
-        public string Endpoint { get; set; }
+        public string Endpoint { get; private set; }
 
-        public string Auth { get; set; }
+        public string Auth { get; private set; }
 
-        public SubscriptionType SubscriptionType { get; set; }
+        public string P256Dh { get; private set; }
 
-        // ReSharper disable once InconsistentNaming
-        public string P256DH { get; set; }
-    }
-    
-    public enum SubscriptionType
-    {
-        Demo,
-        SmartHome
+        public SubscriptionType SubscriptionType { get; private set; }
     }
 }

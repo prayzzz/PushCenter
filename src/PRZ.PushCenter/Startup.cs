@@ -13,7 +13,7 @@ namespace PRZ.PushCenter
     public class Startup
     {
         private readonly IConfiguration _configuration;
-        private ILogger<Startup> _logger;
+        private readonly ILogger<Startup> _logger;
 
         public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
@@ -26,25 +26,39 @@ namespace PRZ.PushCenter
             services.Configure<PushCenterOptions>(_configuration.GetSection("PushCenter"));
 
             services.AddDbContext<PushCenterDbContext>(o => o.UseSqlServer(_configuration.GetConnectionString("PushCenter")));
+
             services.AddScoped<SubscriptionService>();
+            services.AddScoped<SubscriptionTypeService>();
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "PushCenter", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "PushCenter", Version = "v1" }); });
 
+            services.AddResponseCompression();
             services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.LogServerAddresses(_logger);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
 
                 app.UseSwagger();
-                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "PushCenter V1"); });
+                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "PushCenter v1"); });
             }
 
+            app.Use((context, next) =>
+            {
+                context.Response.Headers.Add("Service-Worker-Allowed", "/");
+                return next.Invoke();
+            });
 
+            app.UseResponseCompression();
+
+            app.UseDefaultFiles();
             app.UseStaticFiles();
+
             app.UseMvc();
         }
     }

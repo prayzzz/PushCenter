@@ -2,33 +2,50 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>Demo.AspNetCore.PushNotifications</title>
+    <title>PushCenter</title>
+
+    <link href="image/favicon.png" rel="icon" type="image/png"/>
+    <link href="css/flexboxgrid.min.css" rel="stylesheet" type="text/css"/>
+    <link href="css/site.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
-<div>
-    <div id="dashboard-controls">
-        <button disabled="disabled" id="subscribe">Subscribe for Push Notifications</button>
-        <button disabled="disabled" id="unsubscribe">Unsubscribe from Push Notifications</button>
-        <br/>
-        <hr/>
-        <label for="topic">Topic:</label><input type="text" id="topic" size="32" maxlength="32"/>
-        <label for="urgency">Urgency:</label>
-        <select id="urgency">
-            <option value="VeryLow">Very Low</option>
-            <option value="Low">Low</option>
-            <option value="Normal" selected="selected">Normal</option>
-            <option value="High">High</option>
-        </select><br/>
-        <input id="notification" size="65"/>
-        <button id="send">Send Push Notification</button>
+<body class="layout">
+
+<header>
+    <div class="row center-xs">
+        <h1>PushCenter</h1>
     </div>
-    <hr/>
-    <div id="dashboard-console">
-        <label>Log:</label>
-        <div id="output"></div>
-        <button id="clear" style="position: relative; top: 3px;">Clear</button>
+</header>
+
+<div class="separator"></div>
+
+<main>
+
+    <div class="container-fluid" id="subscriptions">
+
     </div>
-</div>
-<script src="js/notification.js"></script>
+
+</main>
+
+<template id="tmpl-subscription">
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="row middle-xs full-height">
+                <div class="col">
+                    <span class="subscription-name"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <button class="subscribe-btn">Subscribe</button>
+        </div>
+        <div class="col-xs-3">
+            <button class="unsubscribe-btn">Unsubscribe</button>
+        </div>
+    </div>
+
+</template>
+
+<script src="dist/app.js"></script>
 </body>
 </html>
