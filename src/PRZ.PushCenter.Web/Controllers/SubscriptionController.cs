@@ -6,23 +6,23 @@ using Microsoft.Extensions.Options;
 using PRZ.PushCenter.Common;
 using PRZ.PushCenter.Subscriptions;
 
-namespace PRZ.PushCenter.Controllers
+namespace PRZ.PushCenter.Web.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class SubscriptionController : ControllerBase
     {
-        private readonly PushCenterOptions _pushCenterOptions;
+        private readonly PushApiOptions _pushApiOptions;
         private readonly SubscriptionService _subscriptionService;
         private readonly SubscriptionTypeService _subscriptionTypeService;
 
         public SubscriptionController(SubscriptionService subscriptionService,
                                       SubscriptionTypeService subscriptionTypeService,
-                                      IOptions<PushCenterOptions> pushCenterOptions)
+                                      IOptions<PushApiOptions> pushCenterOptions)
         {
             _subscriptionService = subscriptionService;
             _subscriptionTypeService = subscriptionTypeService;
-            _pushCenterOptions = pushCenterOptions.Value;
+            _pushApiOptions = pushCenterOptions.Value;
         }
 
         [HttpDelete]
@@ -40,7 +40,7 @@ namespace PRZ.PushCenter.Controllers
         [HttpGet("public-key")]
         public IActionResult GetPublicKey()
         {
-            return Content(_pushCenterOptions.PublicKey, "text/plain");
+            return Content(_pushApiOptions.PublicKey, "text/plain");
         }
 
         [HttpGet("subscription-types")]

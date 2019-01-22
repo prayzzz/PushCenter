@@ -25,5 +25,9 @@ task("default", async context => {
         .instructions("> index.ts")
         .watch();
 
+    fuse.bundle("sw")
+        .instructions("> sw.ts")
+        .watch();
+
     await fuse.run();
 });

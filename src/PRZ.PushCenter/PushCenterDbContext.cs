@@ -1,14 +1,16 @@
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using PRZ.PushCenter.Subscriptions;
 
 namespace PRZ.PushCenter
 {
-    public class PushCenterDbContext : DbContext
+    [UsedImplicitly]
+    public sealed class PushCenterDbContext : DbContext
     {
         public PushCenterDbContext(DbContextOptions options) : base(options)
         {
         }
 
-        public virtual DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
     }
 }

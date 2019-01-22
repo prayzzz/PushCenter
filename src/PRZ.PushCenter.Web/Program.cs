@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 
-namespace PRZ.PushCenter
+namespace PRZ.PushCenter.Web
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {

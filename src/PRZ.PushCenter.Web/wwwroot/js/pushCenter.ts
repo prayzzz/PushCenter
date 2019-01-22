@@ -105,6 +105,6 @@ export class PushCenter {
             return;
         }
 
-        this.pushServiceWorkerRegistration = navigator.serviceWorker.register('/js/sw.js', { scope: '/' });
+        this.pushServiceWorkerRegistration = navigator.serviceWorker.register('/dist/sw.js', { scope: '/' });
     }
 }

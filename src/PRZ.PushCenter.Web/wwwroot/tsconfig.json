@@ -6,6 +6,11 @@
         "*"
       ]
     },
+    "lib": [
+      "es6",
+      "dom",
+      "webworker"
+    ],
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "ES6",

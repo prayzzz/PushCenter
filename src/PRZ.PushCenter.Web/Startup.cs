@@ -1,16 +1,17 @@
-﻿using Lib.Net.Http.WebPush;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PRZ.PushCenter.Common;
+using PRZ.PushCenter.Push;
+using PRZ.PushCenter.Push.Handler;
 using PRZ.PushCenter.Subscriptions;
+using PRZ.PushCenter.Web.Common;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace PRZ.PushCenter
+namespace PRZ.PushCenter.Web
 {
     public class Startup
     {
@@ -25,17 +26,19 @@ namespace PRZ.PushCenter
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<PushCenterOptions>(_configuration.GetSection("PushCenter"));
+            services.Configure<PushApiOptions>(_configuration.GetSection("PushCenter:PushApi"));
 
             services.AddDbContext<PushCenterDbContext>(o => o.UseSqlServer(_configuration.GetConnectionString("PushCenter")));
 
             services.AddHttpClient();
-            services.AddSingleton<PushServiceClient>();
+
+            services.AddScoped<PushClient>();
+            services.AddScoped<IPushMessageHandler, DemoPushMessageHandler>();
+            services.AddScoped<IPushMessageHandler, ServerPushMessageHandler>();
+            services.AddScoped<IPushMessageHandler, SmartHomePushMessageHandler>();
 
             services.AddScoped<SubscriptionService>();
             services.AddScoped<SubscriptionTypeService>();
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "PushCenter", Version = "v1" }); });
 
