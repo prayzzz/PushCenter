@@ -8,7 +8,7 @@ variables:
   ContinuousVersion: 1
   Revision: $[counter('versioncounter', 100000)]
 
-name: $(Date:yyyyMMdd)-$(Rev:rr)-$(SourceBranchName)
+name: 1.0.0-$(ContinuousVersion)-$(Revision)-$(SourceBranchName)
 
 steps:
 - task: PowerShell@2
