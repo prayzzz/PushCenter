@@ -16,10 +16,11 @@ steps:
   inputs:
     targetType: inline
     script: |
-      $v = "$(Get-Date -Format yyyyMMdd)-$(Revision)"
-      $v2 = "$v-$($Env:BUILD_SOURCEBRANCHNAME)
-      Write-Host "##vso[task.setvariable variable=ContinuousVersion]1.0.0-$v"
-      Write-Host "##vso[build.updatebuildnumber]$v2"
+      $v1 = "$(Get-Date -Format yyyyMMdd)-$(Revision)"
+      $v2 = "1.0.0-$(Get-Date -Format yyyyMMdd)-$(Revision)"
+      $v3 = "$v-$($Env:BUILD_SOURCEBRANCHNAME)
+      Write-Host "##vso[task.setvariable variable=ContinuousVersion]$v2"
+      Write-Host "##vso[build.updatebuildnumber]$v3"
       
 - task: DotNetCoreCLI@2
   inputs:
@@ -28,6 +29,8 @@ steps:
     publishWebProjects: false
     arguments: --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)
     zipAfterPublish: True
+    versioningScheme: byEnvVar
+    versionEnvVar: ContinuousVersion
 
 - task: PublishBuildArtifacts@1
   inputs:
