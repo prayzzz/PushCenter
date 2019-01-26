@@ -17,6 +17,11 @@ steps:
     targetType: inline
     script: |
       Write-Host "##vso[task.setvariable variable=ContinuousVersion]1.0.0-$(Get-Date -Format yyyyMMdd)-$($Env:Revision)"
+      
+- task: PowerShell@2
+  inputs:
+    targetType: inline
+    script: |
       Write-Host "##vso[build.updatebuildnumber]$($Env:ContinuousVersion)-$Env:BUILD_SOURCEBRANCHNAME"
       
 - task: DotNetCoreCLI@2
