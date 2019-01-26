@@ -10,11 +10,11 @@ variables:
 name: $(Date:yyyyMMdd)-$(Rev:rr)-$(SourceBranchName)
 
 steps:
-- task: Bash@3
+- task: PowerShell@2
   inputs:
     targetType: inline
     script: |
-      echo '##vso[task.setvariable ContinuousVersion=$(Date:yyyyMMdd)-$(Rev:rr)]'
+      Write-Host "##vso[task.setvariable ContinuousVersion=$(Get-Date -Format yyyyMMdd)]"
 
 - task: DotNetCoreCLI@2
   inputs:
