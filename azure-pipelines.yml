@@ -4,7 +4,7 @@ pool:
 variables:
   BuildConfiguration: Release 
   ProjectName: PRZ.PushCenter.Web
-  PackageName: PushCenter
+  PackageName: pushcenter-$(Date:yyyyMMdd)-$(Rev:rr)
 
 name: $(Date:yyyyMMdd)-$(Rev:rr)-$(SourceBranchName)
 
