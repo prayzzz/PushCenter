@@ -6,6 +6,7 @@ variables:
   ProjectName: PRZ.PushCenter.Web
   PackageName: pushcenter
   ContinuousVersion: 1
+  Revision: $[counter('versioncounter', 100000)]
 
 name: $(Date:yyyyMMdd)-$(Rev:rr)-$(SourceBranchName)
 
@@ -36,6 +37,6 @@ steps:
     vstsFeedPublish: feed
     vstsFeedPackagePublish: $(PackageName)
     versionOption: custom
-    versionPublish: 1.0.0-$(ContinuousVersion)
+    versionPublish: 1.0.0-$(ContinuousVersion)-$(Revision)
     packagePublishDescription: 
     condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/'))
