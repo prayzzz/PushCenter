@@ -14,7 +14,7 @@ steps:
   inputs:
     targetType: inline
     script: |
-      Write-Host "##vso[task.setvariable ContinuousVersion=$(Get-Date -Format yyyyMMdd)]"
+      Write-Host "##vso[task.setvariable variable=ContinuousVersion]$(Get-Date -Format yyyyMMdd)"
 
 - task: DotNetCoreCLI@2
   inputs:
