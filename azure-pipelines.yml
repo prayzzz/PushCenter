@@ -5,7 +5,7 @@ variables:
   BuildConfiguration: Release 
   ProjectName: PRZ.PushCenter.Web
   PackageName: pushcenter
-  ContinuousVersion:
+  ContinuousVersion: 1
 
 name: $(Date:yyyyMMdd)-$(Rev:rr)-$(SourceBranchName)
 
