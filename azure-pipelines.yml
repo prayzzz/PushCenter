@@ -20,8 +20,6 @@ steps:
       $v2 = "$v-$($Env:BUILD_SOURCEBRANCHNAME)
       Write-Host "##vso[task.setvariable variable=ContinuousVersion]$v"
       Write-Host "##vso[build.updatebuildnumber]$v2"
-    env:
-      Revision: $(Revision)
       
 - task: DotNetCoreCLI@2
   inputs:
