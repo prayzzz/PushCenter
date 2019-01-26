@@ -16,7 +16,7 @@ steps:
   inputs:
     targetType: inline
     script: |
-      $v = "1.0.0-$(Get-Date -Format yyyyMMdd)-$($env:Revision)"
+      $v = "1.0.0-$(Get-Date -Format yyyyMMdd)-$(Revision)"
       $v2 = "$v-$($Env:BUILD_SOURCEBRANCHNAME)
       Write-Host "##vso[task.setvariable variable=ContinuousVersion]$v"
       Write-Host "##vso[build.updatebuildnumber]$v2"
