@@ -5,11 +5,16 @@ variables:
   BuildConfiguration: Release 
   ProjectName: PRZ.PushCenter.Web
   PackageName: pushcenter
-  continuousVersion: $(Date:yyyyMMdd)-$(Rev:rr)
+  ContinuousVersion:
 
 name: $(Date:yyyyMMdd)-$(Rev:rr)-$(SourceBranchName)
 
 steps:
+- task: Bash@3
+  inputs:
+    script: |
+      echo '##vso[task.setvariable continuousVersion=$(Date:yyyyMMdd)-$(Rev:rr)]'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
@@ -30,6 +35,6 @@ steps:
     vstsFeedPublish: feed
     vstsFeedPackagePublish: $(PackageName)
     versionOption: custom
-    versionPublish: 1.0.0-$(continuousVersion)
+    versionPublish: 1.0.0-$(ContinuousVersion)
     packagePublishDescription: 
     condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/'))
