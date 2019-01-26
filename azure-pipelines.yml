@@ -7,16 +7,18 @@ variables:
   PackageName: pushcenter
   ContinuousVersion: 1
   Revision: $[counter('versioncounter', 100000)]
+  Version: 0.0.0
 
-name: 1.0.0-$(ContinuousVersion)-$(Revision)-$(SourceBranchName)
+name: 0.0.0
 
 steps:
 - task: PowerShell@2
   inputs:
     targetType: inline
     script: |
-      Write-Host "##vso[task.setvariable variable=ContinuousVersion]$(Get-Date -Format yyyyMMdd)"
-
+      Write-Host "##vso[task.setvariable variable=ContinuousVersion]1.0.0-$(Get-Date -Format yyyyMMdd)-$(env:Revision)"
+      Write-Host "##vso[build.updatebuildnumber]$(env:ContinuousVersion)-$(SourceBranchName)"
+      
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
@@ -37,6 +39,6 @@ steps:
     vstsFeedPublish: feed
     vstsFeedPackagePublish: $(PackageName)
     versionOption: custom
-    versionPublish: 1.0.0-$(ContinuousVersion)-$(Revision)
+    versionPublish: $(ContinuousVersion)
     packagePublishDescription: 
     condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/'))
