@@ -16,17 +16,12 @@ steps:
   inputs:
     targetType: inline
     script: |
-      Write-Host "##vso[task.setvariable variable=ContinuousVersion]1.0.0-$(Get-Date -Format yyyyMMdd)-$($Env:Revision)"
+      $v = "1.0.0-$(Get-Date -Format yyyyMMdd)-$($env:Revision)"
+      $v2 = "$v-$($Env:BUILD_SOURCEBRANCHNAME)
+      Write-Host "##vso[task.setvariable variable=ContinuousVersion]$v"
+      Write-Host "##vso[build.updatebuildnumber]$v2"
     env:
       Revision: $(Revision)
-      
-- task: PowerShell@2
-  inputs:
-    targetType: inline
-    script: |
-      Write-Host "##vso[build.updatebuildnumber]$($Env:ContinuousVersion)-$Env:BUILD_SOURCEBRANCHNAME"
-    env:
-      ContinuousVersion: $(ContinuousVersion)
       
 - task: DotNetCoreCLI@2
   inputs:
