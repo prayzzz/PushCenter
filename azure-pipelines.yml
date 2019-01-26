@@ -18,7 +18,7 @@ steps:
     script: |
       $v1 = "$(Get-Date -Format yyyyMMdd)-$(Revision)"
       $v2 = "1.0.0-$(Get-Date -Format yyyyMMdd)-$(Revision)"
-      $v3 = "$v-$($Env:BUILD_SOURCEBRANCHNAME)
+      $v3 = "$v1-$($Env:BUILD_SOURCEBRANCHNAME)
       Write-Host "##vso[task.setvariable variable=ContinuousVersion]$v2"
       Write-Host "##vso[build.updatebuildnumber]$v3"
       
