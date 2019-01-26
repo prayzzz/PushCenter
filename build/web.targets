@@ -1,0 +1,23 @@
+<Project>
+
+    <Target Name="PrintVersion" BeforeTargets="BeforeBuild">
+        <Message Text=" " Importance="High"/>
+        <Message Text="Building $(AssemblyName) version $(Version) %0a" Importance="High"/>
+    </Target>
+
+    <Target Name="BuildFrontend" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'">
+        <Message Text=" " Importance="High"/>
+        <Message Text="Building Frontend %0a " Importance="High"/>
+        <Exec Command="yarn --silent" WorkingDirectory="wwwroot"/>
+        <Exec Command="node fuse publish" WorkingDirectory="wwwroot"/>
+        <Message Text=" " Importance="High"/>
+    </Target>
+
+    <Target Name="PublishFrontend" AfterTargets="PrepareForPublish" DependsOnTargets="BuildFrontend">
+        <ItemGroup>
+            <DistFolder Include="wwwroot/dist/**/*"/>
+        </ItemGroup>
+        <Copy SourceFiles="@(DistFolder)" DestinationFolder="$(PublishDir)\wwwroot\dist\%(RecursiveDir)"/>
+    </Target>
+
+</Project>

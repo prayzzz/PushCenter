@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+    <Import Project="..\..\build\web.targets"/>
 
     <PropertyGroup>
         <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -16,6 +17,13 @@
 
     <ItemGroup>
         <ProjectReference Include="..\PRZ.PushCenter\PRZ.PushCenter.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="wwwroot\dist\app.js"/>
+        <_ContentIncludedByDefault Remove="wwwroot\dist\app.js.map"/>
+        <_ContentIncludedByDefault Remove="wwwroot\dist\sw.js"/>
+        <_ContentIncludedByDefault Remove="wwwroot\dist\sw.js.map"/>
     </ItemGroup>
 
 </Project>
