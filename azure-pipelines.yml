@@ -29,4 +29,4 @@ steps:
     vstsFeedPublish: feed
     vstsFeedPackagePublish: $(PackageName)
     packagePublishDescription: 
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+#  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
