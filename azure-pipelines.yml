@@ -1,0 +1,38 @@
+pool:
+  vmImage: Ubuntu 16.04
+  
+variables:
+  BuildConfiguration: Release 
+  ProjectName: PRZ.PushCenter.Web
+  PackageName: PushCenter
+
+name: $(Date:yyyyMMdd)-$(Rev:rr)-$(SourceBranchName)
+
+steps:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: build
+    projects: ./src/$(ProjectName)/$(ProjectName).csproj
+    arguments: --configuration $(BuildConfiguration)
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    projects: ./src/$(ProjectName)/$(ProjectName).csproj
+    publishWebProjects: false
+    arguments: --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)
+    zipAfterPublish: True
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    artifactName: $(ProjectName)
+
+- task: UniversalPackages@0
+  displayName: Universal Publish
+  inputs:
+    command: publish
+    publishDirectory: $(Build.ArtifactStagingDirectory)
+    vstsFeedPublish: feed
+    vstsFeedPackagePublish: $(PackageName)
+    packagePublishDescription: 
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
