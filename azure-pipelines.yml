@@ -13,7 +13,7 @@ steps:
 - task: Bash@3
   inputs:
     script: |
-      echo '##vso[task.setvariable continuousVersion=$(Date:yyyyMMdd)-$(Rev:rr)]'
+      echo '##vso[task.setvariable ContinuousVersion=$(Date:yyyyMMdd)-$(Rev:rr)]'
 
 - task: DotNetCoreCLI@2
   inputs:
