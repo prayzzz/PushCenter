@@ -28,5 +28,7 @@ steps:
     publishDirectory: $(Build.ArtifactStagingDirectory)
     vstsFeedPublish: feed
     vstsFeedPackagePublish: $(PackageName)
+    versionOption: custom
+    versionPublish: 1.0.0-$(Date:yyyyMMdd)-$(Rev:rr)
     packagePublishDescription: 
 #  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
