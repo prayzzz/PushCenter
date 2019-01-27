@@ -41,6 +41,7 @@ steps:
 
 - task: UniversalPackages@0
   displayName: Universal Publish
+  condition: ne(variables['Build.Reason'], 'PullRequest')
   inputs:
     command: publish
     publishDirectory: $(Build.ArtifactStagingDirectory)
@@ -49,4 +50,3 @@ steps:
     versionOption: custom
     versionPublish: $(Version)
     packagePublishDescription: 
-    condition: ne(variables['Build.Reason'], 'PullRequest')
