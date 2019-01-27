@@ -5,11 +5,10 @@ variables:
   BuildConfiguration: Release 
   ProjectName: PRZ.PushCenter.Web
   PackageName: pushcenter
-  ContinuousVersion: 1
   Revision: $[counter('versioncounter', 100000)]
-  Version: 0.0.0
+  Version: 1.0.0
 
-name: 0.0.0
+name: 1.0.0
 
 steps:
 - task: PowerShell@2
@@ -17,7 +16,7 @@ steps:
     targetType: inline
     script: |
       $v = "1.0.0-$(Get-Date -Format yyyyMMdd)-$(Revision)"
-      Write-Host "##vso[task.setvariable variable=ContinuousVersion]$v"      
+      Write-Host "##vso[task.setvariable variable=Version]$v"      
       
 - task: PowerShell@2
   inputs:
@@ -31,10 +30,10 @@ steps:
     command: publish
     projects: ./src/$(ProjectName)/$(ProjectName).csproj
     publishWebProjects: false
-    arguments: --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) /property:Version=$(ContinuousVersion)
+    arguments: --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)
     zipAfterPublish: True
     versioningScheme: byEnvVar
-    versionEnvVar: ContinuousVersion
+    versionEnvVar: Version
 
 - task: PublishBuildArtifacts@1
   inputs:
@@ -48,6 +47,6 @@ steps:
     vstsFeedPublish: feed
     vstsFeedPackagePublish: $(PackageName)
     versionOption: custom
-    versionPublish: $(ContinuousVersion)
+    versionPublish: $(Version)
     packagePublishDescription: 
     condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/')
