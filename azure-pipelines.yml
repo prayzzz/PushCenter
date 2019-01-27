@@ -31,7 +31,7 @@ steps:
     command: publish
     projects: ./src/$(ProjectName)/$(ProjectName).csproj
     publishWebProjects: false
-    arguments: --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)
+    arguments: --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) /property:Version=$(ContinuousVersion)
     zipAfterPublish: True
     versioningScheme: byEnvVar
     versionEnvVar: ContinuousVersion
