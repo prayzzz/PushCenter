@@ -50,4 +50,4 @@ steps:
     versionOption: custom
     versionPublish: $(ContinuousVersion)
     packagePublishDescription: 
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/'))
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/')
