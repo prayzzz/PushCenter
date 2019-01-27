@@ -23,7 +23,7 @@ steps:
   inputs:
     targetType: inline
     script: |
-      $v = "$(Get-Date -Format yyyyMMdd)-$(Revision)-$($Env:BUILD_SOURCEBRANCHNAME)
+      $v = "$(Get-Date -Format yyyyMMdd)-$(Revision)-$($Env:BUILD_SOURCEBRANCHNAME)"
       Write-Host "##vso[build.updatebuildnumber]$v"
       
 - task: DotNetCoreCLI@2
