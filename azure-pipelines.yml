@@ -12,6 +12,7 @@ name: 1.0.0
 
 steps:
 - task: PowerShell@2
+  displayName: Set Version
   inputs:
     targetType: inline
     script: |
@@ -19,6 +20,7 @@ steps:
       Write-Host "##vso[task.setvariable variable=Version]$v"      
       
 - task: PowerShell@2
+  displayName: Set BuildNumber
   inputs:
     targetType: inline
     script: |
@@ -26,6 +28,7 @@ steps:
       Write-Host "##vso[build.updatebuildnumber]$v"
       
 - task: DotNetCoreCLI@2
+  displayName: Build and Publish
   inputs:
     command: publish
     projects: ./src/$(ProjectName)/$(ProjectName).csproj
@@ -36,6 +39,7 @@ steps:
     versionEnvVar: Version
 
 - task: PublishBuildArtifacts@1
+  displayName: Provide Build Artifacts
   inputs:
     artifactName: $(ProjectName)
 
