@@ -9,5 +9,6 @@
 .fusebox/
 node_modules/
 dist/
+publish/
 
 appsettings.development.json
