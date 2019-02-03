@@ -34,7 +34,6 @@ namespace PRZ.PushCenter.Web
             services.AddHttpClient();
 
             services.AddScoped<PushClient>();
-            services.AddScoped<IPushMessageHandler, DemoPushMessageHandler>();
             services.AddScoped<IPushMessageHandler, ServerPushMessageHandler>();
             services.AddScoped<IPushMessageHandler, SmartHomePushMessageHandler>();
 

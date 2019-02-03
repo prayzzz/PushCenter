@@ -6,7 +6,6 @@ namespace PRZ.PushCenter.Subscriptions
     {
         private static readonly Dictionary<int, string> SubscriptionTypes = new Dictionary<int, string>
         {
-            { (int) SubscriptionType.Demo, "Demo" },
             { (int) SubscriptionType.SmartHome, "SmartHome" },
             { (int) SubscriptionType.Server, "Server" }
         };
