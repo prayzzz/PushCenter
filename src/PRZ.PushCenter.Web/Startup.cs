@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,7 +44,9 @@ namespace PRZ.PushCenter.Web
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "PushCenter", Version = "v1" }); });
 
             services.AddResponseCompression();
-            services.AddMvc();
+            services.AddMvc().AddMetrics();
+
+            services.AddPushCenterMetrics(_configuration);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -68,6 +71,8 @@ namespace PRZ.PushCenter.Web
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UsePushCenterMetrics();
 
             app.UseMvc();
         }

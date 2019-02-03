@@ -1,5 +1,5 @@
 const { task, src, context } = require("fuse-box/sparky");
-const { FuseBox, QuantumPlugin } = require("fuse-box");
+const { FuseBox, QuantumPlugin, UglifyESPlugin } = require("fuse-box");
 
 context(
     class {
@@ -15,11 +15,11 @@ context(
                     enabled: !this.quiet,
                 },
                 plugins: [
-                    this.isProduction && QuantumPlugin({
-                        bakeApiIntoBundle: ["app", "sw"],
+                    this.runQuantum && QuantumPlugin({
+                        bakeApiIntoBundle: ["app"],
                         treeshake: true,
-                        uglify: true,
-                    })
+                    }),
+                    this.runUglify && UglifyESPlugin()
                 ],
                 sourceMaps: true
             });
@@ -46,18 +46,20 @@ task("publish", async context => {
         .clean("dist/")
         .exec();
 
-    context.isProduction = true;
     context.quiet = true;
-
-    const fuse = context.getConfig();
-
-    fuse.bundle("app")
-        .cache(false)
-        .instructions("> index.ts");
-
-    fuse.bundle("sw")
+    context.runUglify = true;
+    
+    const swFuse = context.getConfig();    
+    swFuse.bundle("sw")
         .cache(false)
         .instructions("> sw.ts");
-
-    await fuse.run();
+    await swFuse.run();
+    
+    context.runQuantum = true;
+    
+    const appFuse = context.getConfig();
+    appFuse.bundle("app")
+        .cache(false)
+        .instructions("> index.ts");
+    await appFuse.run();    
 });
