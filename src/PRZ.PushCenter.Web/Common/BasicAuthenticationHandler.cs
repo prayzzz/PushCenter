@@ -82,18 +82,18 @@ namespace PRZ.PushCenter.Web.Common
 
         protected override Task HandleChallengeAsync(AuthenticationProperties properties)
         {
-            if (!Request.IsHttps && Request.Host.Host != "localhost")
-            {
-                _metrics.Measure.Counter.Increment(MetricForbidden);
-                Response.StatusCode = StatusCodes.Status403Forbidden;
-            }
-            else
+            if (Request.IsHttps || Request.Host.Host == "localhost")
             {
                 _metrics.Measure.Counter.Increment(MetricChallenged);
                 Response.StatusCode = 401;
 
                 var headerValue = $"Basic realm={Program.Name}";
                 Response.Headers.Append(HeaderNames.WWWAuthenticate, headerValue);
+            }
+            else
+            {
+                _metrics.Measure.Counter.Increment(MetricForbidden);
+                Response.StatusCode = StatusCodes.Status403Forbidden;
             }
 
             return Task.CompletedTask;

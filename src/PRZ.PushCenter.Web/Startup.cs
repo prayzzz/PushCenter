@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,14 +45,15 @@ namespace PRZ.PushCenter.Web
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "PushCenter", Version = "v1" }); });
 
             services.AddResponseCompression();
-            services.AddMvc(o =>
-            {
-                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                o.Filters.Add(new AuthorizeFilter(policy));
-            }).AddMetrics();
+            services.AddMvc().AddMetrics();
 
-            services.AddAuthentication("BasicAuthentication")
-                    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+//            services.AddMvc(o =>
+//            {
+//                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+//                o.Filters.Add(new AuthorizeFilter(policy));
+//            });
+//            services.AddAuthentication("BasicAuthentication")
+//                    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
             services.AddPushCenterMetrics(_configuration);
         }
