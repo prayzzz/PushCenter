@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace PRZ.PushCenter.Subscriptions
+namespace PRZ.PushCenter.Bll.Subscriptions
 {
     public class SubscriptionTypeService
     {

@@ -1,7 +1,7 @@
 using Lib.Net.Http.WebPush;
-using PRZ.PushCenter.Subscriptions;
+using PRZ.PushCenter.Bll.Subscriptions;
 
-namespace PRZ.PushCenter.Push
+namespace PRZ.PushCenter.Bll.Push
 {
     public static class PushSubcriptionMapper
     {

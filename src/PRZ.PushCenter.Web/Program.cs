@@ -9,6 +9,8 @@ namespace PRZ.PushCenter.Web
 {
     public static class Program
     {
+        public const string Name = "PushCenter";
+
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();

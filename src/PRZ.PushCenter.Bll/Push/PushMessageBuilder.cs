@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using PRZ.PushCenter.Common.Attributes;
 
-namespace PRZ.PushCenter.Push
+namespace PRZ.PushCenter.Bll.Push
 {
     public static class PushMessageBuilder
     {

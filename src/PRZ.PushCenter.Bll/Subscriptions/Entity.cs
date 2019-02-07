@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using JetBrains.Annotations;
 
-namespace PRZ.PushCenter.Subscriptions
+namespace PRZ.PushCenter.Bll.Subscriptions
 {
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     public class Entity

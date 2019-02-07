@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PRZ.PushCenter.Push.Handler;
-using PRZ.PushCenter.Subscriptions;
+using PRZ.PushCenter.Bll.Push.Handler;
+using PRZ.PushCenter.Bll.Subscriptions;
 using PRZ.PushCenter.Web.Models;
 
 namespace PRZ.PushCenter.Web.Controllers

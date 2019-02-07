@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using PRZ.PushCenter.Subscriptions;
+using PRZ.PushCenter.Bll.Subscriptions;
 
-namespace PRZ.PushCenter.Push.Handler
+namespace PRZ.PushCenter.Bll.Push.Handler
 {
     public class ServerPushMessageHandler : IPushMessageHandler
     {

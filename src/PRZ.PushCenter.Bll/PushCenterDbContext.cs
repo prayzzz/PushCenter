@@ -1,8 +1,8 @@
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using PRZ.PushCenter.Subscriptions;
+using PRZ.PushCenter.Bll.Subscriptions;
 
-namespace PRZ.PushCenter
+namespace PRZ.PushCenter.Bll
 {
     [UsedImplicitly]
     public sealed class PushCenterDbContext : DbContext

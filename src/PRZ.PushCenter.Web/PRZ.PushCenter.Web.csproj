@@ -6,19 +6,19 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.App"/>
         <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.0.0" />
         <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="3.0.0" />
-        <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
-        <PackageReference Include="Lib.Net.Http.WebPush" Version="2.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.0.1" />
         <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+        <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="6.5.0"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\PRZ.PushCenter\PRZ.PushCenter.csproj" />
+        <ProjectReference Include="..\PRZ.PushCenter.Bll\PRZ.PushCenter.Bll.csproj"/>
+        <ProjectReference Include="..\PRZ.PushCenter.Common\PRZ.PushCenter.Common.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 using PRZ.PushCenter.Common.Attributes;
 
-namespace PRZ.PushCenter.Common
+namespace PRZ.PushCenter.Bll.Common
 {
     [OptionModel]
     public class PushApiOptions

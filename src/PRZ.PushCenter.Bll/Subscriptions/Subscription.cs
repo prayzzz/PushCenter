@@ -1,4 +1,4 @@
-namespace PRZ.PushCenter.Subscriptions
+namespace PRZ.PushCenter.Bll.Subscriptions
 {
     public class Subscription : Entity
     {

@@ -1,24 +1,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Metrics;
+using App.Metrics.Counter;
 using Lib.Net.Http.WebPush;
 using Microsoft.Extensions.Logging;
 
-namespace PRZ.PushCenter.Subscriptions
+namespace PRZ.PushCenter.Bll.Subscriptions
 {
     public class SubscriptionService
     {
         private readonly PushCenterDbContext _dbContext;
         private readonly ILogger<SubscriptionService> _logger;
+        private readonly IMetricsRoot _metrics;
 
-        public SubscriptionService(PushCenterDbContext dbContext, ILogger<SubscriptionService> logger)
+        public SubscriptionService(PushCenterDbContext dbContext, IMetricsRoot metrics, ILogger<SubscriptionService> logger)
         {
             _dbContext = dbContext;
             _logger = logger;
+            _metrics = metrics;
         }
 
         public Task Save(PushSubscription pushSubscription, SubscriptionType subscriptionType)
         {
+            _metrics.Measure.Counter.Increment(MetricsSubscribed);
             _logger.LogInformation($"Adding '{subscriptionType}' subscription for '{pushSubscription.Endpoint}'");
 
             if (_dbContext.Subscriptions.Any(s => s.Endpoint == pushSubscription.Endpoint && s.SubscriptionType == subscriptionType))
@@ -49,6 +54,7 @@ namespace PRZ.PushCenter.Subscriptions
 
         public Task Delete(PushSubscription pushSubscription, SubscriptionType subscriptionType)
         {
+            _metrics.Measure.Counter.Increment(MetricsDeleted);
             _logger.LogInformation($"Deleting '{subscriptionType}' subscription for '{pushSubscription.Endpoint}'");
 
             var subscriptions = _dbContext.Subscriptions
@@ -57,5 +63,19 @@ namespace PRZ.PushCenter.Subscriptions
             _dbContext.Subscriptions.RemoveRange(subscriptions);
             return _dbContext.SaveChangesAsync();
         }
+
+        #region Metrics
+
+        private static readonly CounterOptions MetricsSubscribed = new CounterOptions
+        {
+            Name = "Bll_Subscriptions_Subscribed"
+        };
+
+        private static readonly CounterOptions MetricsDeleted = new CounterOptions
+        {
+            Name = "Bll_Subscriptions_Deleted"
+        };
+
+        #endregion
     }
 }

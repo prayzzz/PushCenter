@@ -1,4 +1,4 @@
-namespace PRZ.PushCenter.Push.Handler
+namespace PRZ.PushCenter.Bll.Push.Handler
 {
     public class PushMessage
     {

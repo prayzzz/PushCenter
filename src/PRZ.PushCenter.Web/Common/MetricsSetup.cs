@@ -1,6 +1,7 @@
 using System;
 using App.Metrics;
 using App.Metrics.AspNetCore.Endpoints;
+using App.Metrics.Formatters.InfluxDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,12 @@ namespace PRZ.PushCenter.Web.Common
     {
         private const string MetricsEndpointKey = "Kestrel:Endpoints:MetricHttp:Url";
 
+        private static readonly MetricsOptions MetricsOptions = new MetricsOptions
+        {
+            Enabled = true,
+            GlobalTags = new GlobalMetricTags { { "service", "PushCenter" } }
+        };
+
         public static IServiceCollection AddPushCenterMetrics(this IServiceCollection services, IConfiguration configuration)
         {
             var metricsEndpoint = configuration.GetValue<string>(MetricsEndpointKey);
@@ -19,14 +26,13 @@ namespace PRZ.PushCenter.Web.Common
                 services.Configure<MetricsEndpointsHostingOptions>(o => o.MetricsEndpointPort = new Uri(metricsEndpoint).Port);
             }
 
-            var metrics = new MetricsBuilder()
-                          .OutputMetrics.AsInfluxDbLineProtocol()
-                          .SampleWith.ForwardDecaying()
-                          .TimeWith.StopwatchClock()
-                          .Build();
+            var metricsRoot = new MetricsBuilder().SampleWith.ForwardDecaying()
+                                                  .TimeWith.StopwatchClock()
+                                                  .Configuration.Configure(MetricsOptions)
+                                                  .Build();
 
-            services.AddMetrics(metrics);
-            services.AddMetricsEndpoints();
+            services.AddMetrics(metricsRoot);
+            services.AddMetricsEndpoints(o => o.MetricsEndpointOutputFormatter = new MetricsInfluxDbLineProtocolOutputFormatter(new MetricFields()));
             services.AddMetricsTrackingMiddleware(o => o.ApdexTrackingEnabled = false);
 
             return services;
