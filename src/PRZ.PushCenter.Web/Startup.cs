@@ -29,7 +29,6 @@ namespace PRZ.PushCenter.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<PushApiOptions>(_configuration.GetSection("PushCenter:PushApi"));
-            services.Configure<BasicAuthenticationOptions>(_configuration.GetSection("PushCenter:BasicAuthentication"));
 
             services.AddDbContext<PushCenterDbContext>(o => o.UseSqlServer(_configuration.GetConnectionString("PushCenter")));
 
@@ -46,14 +45,6 @@ namespace PRZ.PushCenter.Web
 
             services.AddResponseCompression();
             services.AddMvc().AddMetrics();
-
-//            services.AddMvc(o =>
-//            {
-//                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-//                o.Filters.Add(new AuthorizeFilter(policy));
-//            });
-//            services.AddAuthentication("BasicAuthentication")
-//                    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
             services.AddPushCenterMetrics(_configuration);
         }
