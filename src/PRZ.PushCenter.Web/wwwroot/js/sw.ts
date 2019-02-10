@@ -14,8 +14,6 @@ function onPush(this: ServiceWorkerGlobalScope, event: PushEvent) {
 }
 
 function onNotificationClick(this: ServiceWorkerGlobalScope, event: NotificationEvent) {
-    console.log(event);
-
     event.notification.close();
 
     const pushMessage = <PushMessage>event.notification.data;
