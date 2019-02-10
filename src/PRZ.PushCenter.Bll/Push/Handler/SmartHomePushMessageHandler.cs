@@ -13,9 +13,10 @@ namespace PRZ.PushCenter.Bll.Push.Handler
             _pushClient = pushClient;
         }
 
-        public Task Handle(PushMessage message)
+        public Task Handle(PushMessageDto messageDto)
         {
-            return _pushClient.Send(SubscriptionType, PushMessageBuilder.Build(message.Title, message.Body, IconPath));
+            var pushMessage = PushMessageBuilder.Build(messageDto.Title, messageDto.Body, IconPath, messageDto.Link);
+            return _pushClient.Send(SubscriptionType, pushMessage);
         }
 
         public SubscriptionType SubscriptionType => SubscriptionType.SmartHome;

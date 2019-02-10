@@ -10,33 +10,33 @@ namespace PRZ.PushCenter.Web.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SendController : ControllerBase
+    public class WebhookController : ControllerBase
     {
-        private readonly ILogger<SendController> _logger;
+        private readonly ILogger<WebhookController> _logger;
         private readonly IEnumerable<IPushMessageHandler> _pushMessageHandlers;
 
-        public SendController(IEnumerable<IPushMessageHandler> pushMessageHandlers,
-                              ILogger<SendController> logger)
+        public WebhookController(IEnumerable<IPushMessageHandler> pushMessageHandlers,
+                                 ILogger<WebhookController> logger)
         {
             _pushMessageHandlers = pushMessageHandlers;
             _logger = logger;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SendNotification([FromQuery] SubscriptionType type, [FromBody] PushMessageModel message)
+        [HttpPost("grafana")]
+        public async Task<IActionResult> Grafana([FromBody] GrafanaHookModel model)
         {
-            _logger.LogDebug("Received send-notification requests for type '{type}'", type);
+            _logger.LogDebug("Received Grafana webhook");
 
             var pushMessageDto = new PushMessageDto
             {
-                Title = message.Title,
-                Body = message.Body,
-                Link = string.Empty
+                Title = model.Title,
+                Body = model.Message,
+                Link = model.RuleUrl
             };
 
             foreach (var handler in _pushMessageHandlers)
             {
-                if (handler.SubscriptionType == type)
+                if (handler.SubscriptionType == SubscriptionType.Server)
                 {
                     await handler.Handle(pushMessageDto);
                 }

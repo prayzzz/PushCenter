@@ -7,6 +7,6 @@ namespace PRZ.PushCenter.Bll.Push.Handler
     {
         SubscriptionType SubscriptionType { get; }
 
-        Task Handle(PushMessage message);
+        Task Handle(PushMessageDto messageDto);
     }
 }

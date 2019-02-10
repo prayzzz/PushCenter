@@ -47,7 +47,9 @@ namespace PRZ.PushCenter.Bll.Push
         public async Task Send(SubscriptionType subscriptionType, PushMessage pushMessage)
         {
             var subscriptions = _subscriptionService.Find(subscriptionType).Select(PushSubcriptionMapper.Map).ToList();
+
             _metrics.Measure.Counter.Increment(MetricsSend, subscriptions.Count);
+            _logger.LogDebug("Sending PushMessage to {count} subscribers of type '{subscriptionType}'", subscriptions.Count, subscriptionType);
 
             foreach (var subscription in subscriptions)
             {
@@ -57,7 +59,9 @@ namespace PRZ.PushCenter.Bll.Push
                 }
                 catch (PushServiceClientException e)
                 {
-                    _logger.LogError(e, "Failed to send Notification");
+                    _logger.LogError(e,
+                                     "Failed to send Notification to {count} subscribers of type '{subscriptionType}'",
+                                     subscriptions.Count, subscriptionType);
                 }
             }
         }
