@@ -60,3 +60,79 @@ button:hover:enabled {
 #subscriptions > .row:nth-of-type(even) {
     background-color: hsl(0, 0%, 100%);
 }
+
+/**
+ * CSS Loader
+ */
+.loading-animation {
+    margin: 0 auto;
+    width: 100px;
+    text-align: center;
+}
+
+.loading-animation div {
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.loading-animation .line {
+    width: 1px;
+    height: 12px;
+    background: #000;
+    margin: 0 1px;
+    display: inline-block;
+    animation: opacity-1 1200ms infinite ease-in-out;
+}
+
+.loading-animation .line-0 {
+    animation-delay: 1000ms;
+}
+
+.loading-animation .line-1 {
+    animation-delay: 800ms;
+}
+
+.loading-animation .line-2 {
+    animation-delay: 600ms;
+}
+
+.loading-animation .line-3 {
+    animation-delay: 400ms;
+}
+
+.loading-animation .line-4 {
+    animation-delay: 200ms;
+}
+
+.loading-animation .line-6 {
+    animation-delay: 200ms;
+}
+
+.loading-animation .line-7 {
+    animation-delay: 400ms;
+}
+
+.loading-animation .line-8 {
+    animation-delay: 600ms;
+}
+
+.loading-animation .line-9 {
+    animation-delay: 800ms;
+}
+
+.loading-animation .line-10 {
+    animation-delay: 1000ms;
+}
+
+@keyframes opacity-1 {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
