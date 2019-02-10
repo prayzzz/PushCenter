@@ -15,7 +15,7 @@ namespace PRZ.PushCenter.Bll.Push.Handler
 
         public Task Handle(PushMessageDto messageDto)
         {
-            var pushMessage = PushMessageBuilder.Build(messageDto.Title, messageDto.Body, IconPath, messageDto.Link);
+            var pushMessage = PushMessageBuilder.Build(messageDto.Title, messageDto.Body, messageDto.Icon ?? IconPath, messageDto.Link);
             return _pushClient.Send(SubscriptionType, pushMessage);
         }
 

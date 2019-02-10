@@ -35,15 +35,28 @@ namespace PRZ.PushCenter.Web
             services.AddHttpClient();
 
             services.AddScoped<PushClient>();
+
+            services.AddScoped<ServerPushMessageHandler>();
+            services.AddScoped<SmartHomePushMessageHandler>();
             services.AddScoped<IPushMessageHandler, ServerPushMessageHandler>();
             services.AddScoped<IPushMessageHandler, SmartHomePushMessageHandler>();
 
             services.AddScoped<SubscriptionService>();
             services.AddScoped<SubscriptionTypeService>();
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "PushCenter", Version = "v1" }); });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "PushCenter" });
+                c.EnableAnnotations();
+            });
 
             services.AddResponseCompression();
+
+            services.AddRouting(o =>
+            {
+                o.LowercaseUrls = true;
+                o.LowercaseQueryStrings = true;
+            });
             services.AddMvc().AddMetrics();
 
             services.AddPushCenterMetrics(_configuration);

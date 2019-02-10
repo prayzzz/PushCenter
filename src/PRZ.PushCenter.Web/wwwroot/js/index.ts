@@ -53,6 +53,17 @@ async function renderSubs() {
         });
         unsubBtn.disabled = !isSubbed;
 
+        const testBtn = <HTMLButtonElement>tmpl.querySelector(".test-btn");
+        testBtn.addEventListener("click", async () => {
+            await fetch(`api/send?type=${typeId}`, {
+                method: 'post',
+                headers: { "Content-type": "application/json" },
+                body: JSON.stringify({ body: "My Message", title: "My Title" })
+            });
+            // await pushCenter.unsubscribe(parseInt(typeId));
+        });
+        testBtn.disabled = !isSubbed;
+
         root.appendChild(tmpl)
     }
 }

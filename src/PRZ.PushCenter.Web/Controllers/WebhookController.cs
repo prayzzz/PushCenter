@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PRZ.PushCenter.Bll.Push.Handler;
-using PRZ.PushCenter.Bll.Subscriptions;
 using PRZ.PushCenter.Web.Models;
 
 namespace PRZ.PushCenter.Web.Controllers
@@ -13,34 +11,29 @@ namespace PRZ.PushCenter.Web.Controllers
     public class WebhookController : ControllerBase
     {
         private readonly ILogger<WebhookController> _logger;
-        private readonly IEnumerable<IPushMessageHandler> _pushMessageHandlers;
+        private readonly ServerPushMessageHandler _serverPushMessageHandler;
 
-        public WebhookController(IEnumerable<IPushMessageHandler> pushMessageHandlers,
+        public WebhookController(ServerPushMessageHandler serverPushMessageHandler,
                                  ILogger<WebhookController> logger)
         {
-            _pushMessageHandlers = pushMessageHandlers;
+            _serverPushMessageHandler = serverPushMessageHandler;
             _logger = logger;
         }
 
         [HttpPost("grafana")]
         public async Task<IActionResult> Grafana([FromBody] GrafanaHookModel model)
         {
-            _logger.LogDebug("Received Grafana webhook");
+            _logger.LogDebug("Received Grafana alert '{title}'", model.Title);
 
             var pushMessageDto = new PushMessageDto
             {
                 Title = model.Title,
                 Body = model.Message,
-                Link = model.RuleUrl
+                Link = model.RuleUrl,
+                Icon = "/image/push-icons/grafana.png"
             };
 
-            foreach (var handler in _pushMessageHandlers)
-            {
-                if (handler.SubscriptionType == SubscriptionType.Server)
-                {
-                    await handler.Handle(pushMessageDto);
-                }
-            }
+            await _serverPushMessageHandler.Handle(pushMessageDto);
 
             return Ok();
         }
