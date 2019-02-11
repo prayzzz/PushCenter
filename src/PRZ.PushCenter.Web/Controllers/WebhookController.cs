@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PRZ.PushCenter.Bll.Push.Handler;
+using PRZ.PushCenter.Bll.Push;
+using PRZ.PushCenter.Bll.Subscriptions;
 using PRZ.PushCenter.Web.Models;
 
 namespace PRZ.PushCenter.Web.Controllers
@@ -11,12 +12,12 @@ namespace PRZ.PushCenter.Web.Controllers
     public class WebhookController : ControllerBase
     {
         private readonly ILogger<WebhookController> _logger;
-        private readonly ServerPushMessageHandler _serverPushMessageHandler;
+        private readonly PushClient _pushClient;
 
-        public WebhookController(ServerPushMessageHandler serverPushMessageHandler,
+        public WebhookController(PushClient pushClient,
                                  ILogger<WebhookController> logger)
         {
-            _serverPushMessageHandler = serverPushMessageHandler;
+            _pushClient = pushClient;
             _logger = logger;
         }
 
@@ -25,15 +26,11 @@ namespace PRZ.PushCenter.Web.Controllers
         {
             _logger.LogDebug("Received Grafana alert '{title}'", model.Title);
 
-            var pushMessageDto = new PushMessageDto
-            {
-                Title = model.Title,
-                Body = model.Message,
-                Link = model.RuleUrl,
-                Icon = "/image/push-icons/grafana.png"
-            };
+            var message = PushMessage.Create(model.Title, model.Message)
+                                     .WithLink(model.RuleUrl)
+                                     .WithImageUrl("/image/push-icons/grafana.png");
 
-            await _serverPushMessageHandler.Handle(pushMessageDto);
+            await _pushClient.Send(SubscriptionType.Server, message);
 
             return Ok();
         }

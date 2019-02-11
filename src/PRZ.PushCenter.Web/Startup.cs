@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using PRZ.PushCenter.Bll;
 using PRZ.PushCenter.Bll.Common;
 using PRZ.PushCenter.Bll.Push;
-using PRZ.PushCenter.Bll.Push.Handler;
 using PRZ.PushCenter.Bll.Subscriptions;
 using PRZ.PushCenter.Web.Common;
 using Swashbuckle.AspNetCore.Swagger;
@@ -35,11 +34,6 @@ namespace PRZ.PushCenter.Web
             services.AddHttpClient();
 
             services.AddScoped<PushClient>();
-
-            services.AddScoped<ServerPushMessageHandler>();
-            services.AddScoped<SmartHomePushMessageHandler>();
-            services.AddScoped<IPushMessageHandler, ServerPushMessageHandler>();
-            services.AddScoped<IPushMessageHandler, SmartHomePushMessageHandler>();
 
             services.AddScoped<SubscriptionService>();
             services.AddScoped<SubscriptionTypeService>();

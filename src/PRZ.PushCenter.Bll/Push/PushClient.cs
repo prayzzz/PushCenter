@@ -55,7 +55,7 @@ namespace PRZ.PushCenter.Bll.Push
             {
                 try
                 {
-                    await RequestPushMessageDeliveryAsync(subscription, pushMessage, _vapidAuthentication);
+                    await RequestPushMessageDeliveryAsync(subscription, pushMessage.Build(), _vapidAuthentication);
                 }
                 catch (PushServiceClientException e)
                 {
