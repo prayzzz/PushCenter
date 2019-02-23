@@ -55,12 +55,11 @@ async function renderSubs() {
 
         const testBtn = <HTMLButtonElement>tmpl.querySelector(".test-btn");
         testBtn.addEventListener("click", async () => {
-            await fetch(`api/send?type=${typeId}`, {
+            await fetch(`api/send/toSubscriber?type=${typeId}`, {
                 method: 'post',
                 headers: { "Content-type": "application/json" },
-                body: JSON.stringify({ body: "My Message", title: "My Title" })
+                body: JSON.stringify({ endpoint: subscription.endpoint, sendNotificationModel: { body: "My Message", title: "My Title" } })
             });
-            // await pushCenter.unsubscribe(parseInt(typeId));
         });
         testBtn.disabled = !isSubbed;
 

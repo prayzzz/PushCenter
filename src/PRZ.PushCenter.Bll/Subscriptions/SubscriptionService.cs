@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Counter;
+using JetBrains.Annotations;
 using Lib.Net.Http.WebPush;
 using Microsoft.Extensions.Logging;
 
@@ -32,14 +33,20 @@ namespace PRZ.PushCenter.Bll.Subscriptions
             }
 
             var subscription = new Subscription(
-                pushSubscription.Endpoint,
-                pushSubscription.GetKey(PushEncryptionKeyName.Auth),
-                pushSubscription.GetKey(PushEncryptionKeyName.P256DH),
-                subscriptionType
-            );
+                                                pushSubscription.Endpoint,
+                                                pushSubscription.GetKey(PushEncryptionKeyName.Auth),
+                                                pushSubscription.GetKey(PushEncryptionKeyName.P256DH),
+                                                subscriptionType
+                                               );
 
             _dbContext.Add(subscription);
             return _dbContext.SaveChangesAsync();
+        }
+
+        [CanBeNull]
+        public Subscription Find(string endpoint, SubscriptionType type)
+        {
+            return _dbContext.Subscriptions.SingleOrDefault(s => s.Endpoint == endpoint && s.SubscriptionType == type);
         }
 
         public IEnumerable<SubscriptionType> Find(string endpoint)

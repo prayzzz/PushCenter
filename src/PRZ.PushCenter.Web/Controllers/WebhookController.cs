@@ -13,10 +13,13 @@ namespace PRZ.PushCenter.Web.Controllers
     {
         private readonly ILogger<WebhookController> _logger;
         private readonly PushClient _pushClient;
+        private readonly SubscriptionService _subscriptionService;
 
-        public WebhookController(PushClient pushClient,
+        public WebhookController(SubscriptionService subscriptionService,
+                                 PushClient pushClient,
                                  ILogger<WebhookController> logger)
         {
+            _subscriptionService = subscriptionService;
             _pushClient = pushClient;
             _logger = logger;
         }
@@ -28,9 +31,11 @@ namespace PRZ.PushCenter.Web.Controllers
 
             var message = PushMessage.Create(model.Title, model.Message)
                                      .WithLink(model.RuleUrl)
-                                     .WithImageUrl("/image/push-icons/grafana.png");
+                                     .WithImageUrl("/image/push-icons/grafana.png")
+                                     .WithUrgency(Urgency.High);
 
-            await _pushClient.Send(SubscriptionType.Server, message);
+            var subscriptions = _subscriptionService.Find(SubscriptionType.Server);
+            await _pushClient.Send(subscriptions, message);
 
             return Ok();
         }

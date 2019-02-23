@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using PRZ.PushCenter.Bll.Push;
 using PRZ.PushCenter.Common.Attributes;
 
 namespace PRZ.PushCenter.Web.Models
 {
     [JsonModel]
-    public class PushMessageModel
+    public class SendNotificationModel
     {
         [Required]
         public string Body { get; set; }
@@ -13,5 +14,9 @@ namespace PRZ.PushCenter.Web.Models
         public string Title { get; set; }
 
         public string Link { get; set; }
+
+        public Urgency Urgency { get; set; }
+
+        public int TimeToLiveSeconds { get; set; }
     }
 }

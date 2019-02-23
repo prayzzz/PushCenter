@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.Counter;
+using JetBrains.Annotations;
 using Lib.Net.Http.WebPush;
 using Lib.Net.Http.WebPush.Authentication;
 using Microsoft.Extensions.Logging;
@@ -25,18 +27,15 @@ namespace PRZ.PushCenter.Bll.Push
 
         private readonly ILogger<PushClient> _logger;
         private readonly IMetricsRoot _metrics;
-        private readonly SubscriptionService _subscriptionService;
         private readonly VapidAuthentication _vapidAuthentication;
 
-        public PushClient(SubscriptionService subscriptionService,
-                          IHttpClientFactory client,
+        public PushClient(IHttpClientFactory client,
                           IOptions<PushApiOptions> options,
                           IMetricsRoot metrics,
                           ILogger<PushClient> logger) : base(client.CreateClient())
         {
             _logger = logger;
             _metrics = metrics;
-            _subscriptionService = subscriptionService;
 
             _vapidAuthentication = new VapidAuthentication(options.Value.PublicKey, options.Value.PrivateKey)
             {
@@ -44,14 +43,14 @@ namespace PRZ.PushCenter.Bll.Push
             };
         }
 
-        public async Task Send(SubscriptionType subscriptionType, PushMessage pushMessage)
+        public async Task Send(IEnumerable<Subscription> subscriptions, PushMessage pushMessage)
         {
-            var subscriptions = _subscriptionService.Find(subscriptionType).Select(PushSubcriptionMapper.Map).ToList();
+            var pushSubs = subscriptions.Select(PushSubcriptionMapper.Map).ToList();
 
-            _metrics.Measure.Counter.Increment(MetricsSend, subscriptions.Count);
-            _logger.LogDebug("Sending PushMessage to {count} subscribers of type '{subscriptionType}'", subscriptions.Count, subscriptionType);
+            _metrics.Measure.Counter.Increment(MetricsSend, pushSubs.Count);
+            _logger.LogDebug("Sending PushMessage to {count} subscribers", pushSubs.Count);
 
-            foreach (var subscription in subscriptions)
+            foreach (var subscription in pushSubs)
             {
                 try
                 {
@@ -59,11 +58,14 @@ namespace PRZ.PushCenter.Bll.Push
                 }
                 catch (PushServiceClientException e)
                 {
-                    _logger.LogError(e,
-                                     "Failed to send Notification to {count} subscribers of type '{subscriptionType}'",
-                                     subscriptions.Count, subscriptionType);
+                    _logger.LogError(e, "Failed to send Notification to '{endpoint}'", subscription.Endpoint);
                 }
             }
+        }
+
+        public Task Send([NotNull] Subscription subscription, PushMessage pushMessage)
+        {
+            return Send(new[] { subscription }, pushMessage);
         }
     }
 }

@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "fuse-box": "3.6.0",
-    "typescript": "3.3.1",
+    "fuse-box": "3.7.1",
+    "typescript": "3.3.3333",
     "uglify-es": "3.3.9",
     "uglify-js": "3.4.9"
   },

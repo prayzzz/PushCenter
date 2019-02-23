@@ -16,8 +16,4 @@
         <ProjectReference Include="..\PRZ.PushCenter.Common\PRZ.PushCenter.Common.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Push\Handler"/>
-    </ItemGroup>
-
 </Project>
