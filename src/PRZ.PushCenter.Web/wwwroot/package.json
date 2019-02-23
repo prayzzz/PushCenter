@@ -6,8 +6,7 @@
   "devDependencies": {
     "fuse-box": "3.7.1",
     "typescript": "3.3.3333",
-    "uglify-es": "3.3.9",
-    "uglify-js": "3.4.9"
+    "terser": "^3.16.1"
   },
   "scripts": {
     "up": "yarn upgrade-interactive --latest"

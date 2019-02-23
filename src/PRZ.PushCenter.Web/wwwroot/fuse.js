@@ -1,5 +1,5 @@
 const { task, src, context } = require("fuse-box/sparky");
-const { FuseBox, QuantumPlugin, UglifyESPlugin } = require("fuse-box");
+const { FuseBox, QuantumPlugin, TerserPlugin } = require("fuse-box");
 
 context(
     class {
@@ -19,7 +19,7 @@ context(
                         bakeApiIntoBundle: ["app"],
                         treeshake: true,
                     }),
-                    this.runUglify && UglifyESPlugin()
+                    this.runUglify && TerserPlugin()
                 ],
                 sourceMaps: true
             });
