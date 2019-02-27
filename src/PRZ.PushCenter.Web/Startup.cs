@@ -51,7 +51,10 @@ namespace PRZ.PushCenter.Web
                 o.LowercaseUrls = true;
                 o.LowercaseQueryStrings = true;
             });
-            services.AddMvc().AddMetrics();
+
+            var mvc = services.AddMvc();
+            mvc.SetCompatibilityVersion(CompatibilityVersion.Latest);
+            mvc.AddMetrics();
 
             services.AddPushCenterMetrics(_configuration);
         }
