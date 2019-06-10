@@ -1,0 +1,14 @@
+{
+  "name": "push-center",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "fuse-box": "3.7.1",
+    "terser": "^4.0.0",
+    "typescript": "3.5.1"
+  },
+  "scripts": {
+    "up": "yarn upgrade-interactive --latest"
+  }
+}
