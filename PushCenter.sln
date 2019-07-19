@@ -11,6 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushCenter.Bll", "src\PushC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushCenter.Common", "src\PushCenter.Common\PushCenter.Common.csproj", "{66FD2B46-967B-4A4C-ABCA-F14FBA10C026}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{3E926756-8E24-4EA1-92A4-703417D896E8}"
+ProjectSection(SolutionItems) = preProject
+	build\web.targets = build\web.targets
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

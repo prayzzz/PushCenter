@@ -61,6 +61,15 @@ button:hover:enabled {
     background-color: hsl(0, 0%, 100%);
 }
 
+.warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: .25rem;
+}
+
 /**
  * CSS Loader
  */

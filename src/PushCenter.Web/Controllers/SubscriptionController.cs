@@ -39,6 +39,12 @@ namespace PushCenter.Web.Controllers
                 throw new ArgumentNullException(nameof(subscription));
             }
 
+            // MS Edge gives encoded Url
+            if (subscription.Endpoint.Contains("%"))
+            {
+                subscription.Endpoint = Uri.UnescapeDataString(subscription.Endpoint);
+            }
+
             await _subscriptionService.Delete(subscription, type);
 
             return Ok();
@@ -68,6 +74,12 @@ namespace PushCenter.Web.Controllers
             if (subscription == null)
             {
                 throw new ArgumentNullException(nameof(subscription));
+            }
+
+            // MS Edge gives encoded Url
+            if (subscription.Endpoint.Contains("%"))
+            {
+                subscription.Endpoint = Uri.UnescapeDataString(subscription.Endpoint);
             }
 
             await _subscriptionService.Save(subscription, type);

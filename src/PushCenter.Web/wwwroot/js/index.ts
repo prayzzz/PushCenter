@@ -11,7 +11,22 @@ const subscriptionService = new SubscriptionService();
 declare var window: PushCenterWindow;
 window.PushCenter = pushCenter;
 
-renderSubs();
+if (pushCenter.isSupported) {
+    renderSubs();
+} else {
+    renderNotSupported();
+}
+
+function renderNotSupported() {
+    const loading = document.querySelector("#loading") as HTMLElement;
+    loading.style.display = "none";
+
+    const subscriptions = document.querySelector("#subscriptions") as HTMLElement;
+    subscriptions.style.display = "none";
+
+    const notSupported = document.querySelector("#warn-not-supported") as HTMLElement;
+    notSupported.style.display = "block";
+}
 
 async function renderSubs() {
     const subscription = await pushCenter.getSubscription();
@@ -23,13 +38,12 @@ async function renderSubs() {
         activeSubs = await activeSubsPromise;
     }
 
-    const types = await typesPromise;
-
-    const root = document.querySelector("#subscriptions");
-    while (root.firstChild) {
-        root.removeChild(root.firstChild);
+    const subscriptions = document.querySelector("#subscriptions") as HTMLElement;
+    while (subscriptions.firstChild) {
+        subscriptions.removeChild(subscriptions.firstChild);
     }
-
+    
+    const types = await typesPromise;
     for (let typeId in types) {
         const t = <HTMLTemplateElement>document.querySelector('#tmpl-subscription');
         const tmpl = document.importNode(t.content, true);
@@ -63,6 +77,10 @@ async function renderSubs() {
         });
         testBtn.disabled = !isSubbed;
 
-        root.appendChild(tmpl)
+        subscriptions.appendChild(tmpl)
     }
+
+    const loading = document.querySelector("#loading") as HTMLElement;
+    loading.style.display = "none";
+    subscriptions.style.display = "block";
 }

@@ -5,10 +5,12 @@
   "license": "MIT",
   "devDependencies": {
     "fuse-box": "3.7.1",
-    "terser": "^4.0.0",
-    "typescript": "3.5.1"
+    "terser": "4.1.2",
+    "typescript": "3.5.3"
   },
   "scripts": {
-    "up": "yarn upgrade-interactive --latest"
+    "up": "yarn upgrade-interactive --latest",
+    "publish": "node fuse publish",
+    "watch": "node fuse"
   }
 }

@@ -27,10 +27,7 @@ context(
     }
 );
 
-task("default", async;
-context =;
->
-{
+task("default", async context => {
     const fuse = context.getConfig();
 
     fuse.bundle("app")
@@ -41,16 +38,11 @@ context =;
         .instructions("> sw.ts")
         .watch();
 
-    await;
-    fuse.run();
-}
-)
-task("publish", async;
-context =;
->
-{
-    await;
-    src("./dist")
+    await fuse.run();
+});
+
+task("publish", async context => {
+    await src("./dist")
         .clean("dist/")
         .exec();
 
@@ -61,8 +53,7 @@ context =;
     swFuse.bundle("sw")
         .cache(false)
         .instructions("> sw.ts");
-    await;
-    swFuse.run();
+    await swFuse.run();
 
     context.runQuantum = true;
 
@@ -70,8 +61,6 @@ context =;
     appFuse.bundle("app")
         .cache(false)
         .instructions("> index.ts");
-    await;
-    appFuse.run();
 
-}
-)
+    await appFuse.run();
+});
