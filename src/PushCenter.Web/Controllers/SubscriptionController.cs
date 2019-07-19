@@ -39,12 +39,6 @@ namespace PushCenter.Web.Controllers
                 throw new ArgumentNullException(nameof(subscription));
             }
 
-            // MS Edge gives encoded Url
-            if (subscription.Endpoint.Contains("%"))
-            {
-                subscription.Endpoint = Uri.UnescapeDataString(subscription.Endpoint);
-            }
-
             await _subscriptionService.Delete(subscription, type);
 
             return Ok();
@@ -76,19 +70,16 @@ namespace PushCenter.Web.Controllers
                 throw new ArgumentNullException(nameof(subscription));
             }
 
-            // MS Edge gives encoded Url
-            if (subscription.Endpoint.Contains("%"))
-            {
-                subscription.Endpoint = Uri.UnescapeDataString(subscription.Endpoint);
-            }
-
             await _subscriptionService.Save(subscription, type);
 
             return Ok();
         }
 
-        [HttpGet]
-        public IActionResult Find([FromQuery] string endpoint)
+        /// <summary>
+        ///     Passing URLs via query parameters can lead to encoding issues. It's safer to send it in the body.
+        /// </summary>
+        [HttpPost("find")]
+        public IActionResult Find([FromBody] string endpoint)
         {
             if (endpoint == null)
             {

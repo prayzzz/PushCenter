@@ -11,7 +11,11 @@ export class SubscriptionService {
     }
 
     public async getActiveSubscription(endpoint: string): Promise<Array<number>> {
-        const req = await fetch(`api/subscription?endpoint=${endpoint}`);
+        const req = await fetch(`api/subscription/find`, {
+            method: 'post',
+            headers: { "Content-type": "text/plain" },
+            body: endpoint
+        });
         if (!req.ok) {
             return [];
         }

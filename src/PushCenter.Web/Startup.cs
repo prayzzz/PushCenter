@@ -52,7 +52,7 @@ namespace PushCenter.Web
                 o.LowercaseQueryStrings = true;
             });
 
-            var mvc = services.AddMvc();
+            var mvc = services.AddMvc(options => { options.InputFormatters.Add(new TextPlainInputFormatter()); });
             mvc.SetCompatibilityVersion(CompatibilityVersion.Latest);
             mvc.AddMetrics();
 
