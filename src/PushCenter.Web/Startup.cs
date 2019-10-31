@@ -4,25 +4,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using PushCenter.Bll;
 using PushCenter.Bll.Common;
 using PushCenter.Bll.Push;
 using PushCenter.Bll.Subscriptions;
 using PushCenter.Web.Common;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace PushCenter.Web
 {
     public class Startup
     {
         private readonly IConfiguration _configuration;
-        private readonly ILogger<Startup> _logger;
 
-        public Startup(IConfiguration configuration, ILogger<Startup> logger)
+        public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
-            _logger = logger;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -40,11 +39,16 @@ namespace PushCenter.Web
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "PushCenter" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PushCenter" });
                 c.EnableAnnotations();
             });
 
             services.AddResponseCompression();
+
+            services.AddRazorPages();
+            services.AddControllers(o => o.InputFormatters.Add(new TextPlainInputFormatter()))
+                    .AddNewtonsoftJson()
+                    .AddMetrics();
 
             services.AddRouting(o =>
             {
@@ -52,22 +56,18 @@ namespace PushCenter.Web
                 o.LowercaseQueryStrings = true;
             });
 
-            var mvc = services.AddMvc(options => { options.InputFormatters.Add(new TextPlainInputFormatter()); });
-            mvc.SetCompatibilityVersion(CompatibilityVersion.Latest);
-            mvc.AddMetrics();
-
             services.AddPushCenterMetrics(_configuration);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
-            app.LogServerAddresses(_logger);
+            app.LogServerAddresses(logger);
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
 
-                app.UseSwagger();
+                app.UseSwagger(c => c.SerializeAsV2 = true);
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "PushCenter v1"); });
             }
 
@@ -82,10 +82,14 @@ namespace PushCenter.Web
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
+            app.UseRouting();
             app.UsePushCenterMetrics();
 
-            app.UseAuthentication();
-            app.UseMvc();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+                endpoints.MapControllers();
+            });
         }
     }
 }

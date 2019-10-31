@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 
 namespace PushCenter.Web
@@ -16,13 +16,16 @@ namespace PushCenter.Web
             CreateWebHostBuilder(args).Build().Run();
         }
 
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        private static IHostBuilder CreateWebHostBuilder(string[] args)
         {
-            return WebHost.CreateDefaultBuilder(args)
-                          .ConfigureAppConfiguration((context, builder) => ConfigureAppConfiguration(args, builder))
-                          .UseStartup<Startup>()
-                          .UseSerilog(ConfigureLogging)
-                          .SuppressStatusMessages(true);
+            return Host.CreateDefaultBuilder(args)
+                       .ConfigureAppConfiguration((context, builder) => ConfigureAppConfiguration(args, builder))
+                       .UseSerilog(ConfigureLogging)
+                       .ConfigureWebHostDefaults(webHostBuilder =>
+                       {
+                           webHostBuilder.UseStartup<Startup>()
+                                         .SuppressStatusMessages(true);
+                       });
         }
 
         private static void ConfigureAppConfiguration(IReadOnlyList<string> args, IConfigurationBuilder builder)
@@ -34,7 +37,7 @@ namespace PushCenter.Web
             }
         }
 
-        private static void ConfigureLogging(WebHostBuilderContext context, LoggerConfiguration config)
+        private static void ConfigureLogging(HostBuilderContext context, LoggerConfiguration config)
         {
             config.ReadFrom.Configuration(context.Configuration);
         }

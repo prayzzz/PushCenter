@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -21,9 +22,9 @@ namespace PushCenter.Web.Common
 
         public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
         {
-            using (var streamReader = context.ReaderFactory(context.HttpContext.Request.Body, encoding))
+            using (var reader = new StreamReader(context.HttpContext.Request.Body, encoding))
             {
-                return InputFormatterResult.Success(await streamReader.ReadToEndAsync());
+                return await InputFormatterResult.SuccessAsync(await reader.ReadToEndAsync());
             }
         }
     }

@@ -25,7 +25,7 @@ namespace PushCenter.Bll.Subscriptions
         public Task Save(PushSubscription pushSubscription, SubscriptionType subscriptionType)
         {
             _metrics.Measure.Counter.Increment(MetricsSubscribed);
-            _logger.LogInformation($"Adding '{subscriptionType}' subscription for '{pushSubscription.Endpoint}'");
+            _logger.LogInformation("Adding '{subscriptionType}' subscription for '{endpoint}'", subscriptionType, pushSubscription.Endpoint);
 
             if (_dbContext.Subscriptions.Any(s => s.Endpoint == pushSubscription.Endpoint && s.SubscriptionType == subscriptionType))
             {
@@ -62,7 +62,7 @@ namespace PushCenter.Bll.Subscriptions
         public Task Delete(PushSubscription pushSubscription, SubscriptionType subscriptionType)
         {
             _metrics.Measure.Counter.Increment(MetricsDeleted);
-            _logger.LogInformation($"Deleting '{subscriptionType}' subscription for '{pushSubscription.Endpoint}'");
+            _logger.LogInformation("Deleting '{subscriptionType}' subscription for '{endpoint}'", subscriptionType, pushSubscription.Endpoint);
 
             var subscriptions = _dbContext.Subscriptions
                                           .Where(s => s.Endpoint == pushSubscription.Endpoint && s.SubscriptionType == subscriptionType);
