@@ -19,13 +19,21 @@ main {
 }
 
 button {
+    box-shadow: 1px 1px 5px hsl(0, 0%, 80%);
     background-color: hsl(0, 0%, 100%);
-    border: 1px hsl(0, 0%, 90%) solid;
+    border: 1px hsl(0, 0%, 75%) solid;
     padding: .5rem 1rem;
+    border-radius: 2px;
 }
 
 button:hover:enabled {
     cursor: pointer;
+}
+
+button:disabled {
+    box-shadow: none;
+    border: 1px hsl(0, 0%, 90%) solid;
+    cursor: not-allowed;
 }
 
 .full-height {
@@ -51,14 +59,6 @@ button:hover:enabled {
 
 #subscriptions > .row:first-of-type {
     border-top: 1px hsl(0, 0%, 90%) solid;
-}
-
-#subscriptions > .row:nth-of-type(odd) {
-    background-color: hsl(0, 0%, 98%);
-}
-
-#subscriptions > .row:nth-of-type(even) {
-    background-color: hsl(0, 0%, 100%);
 }
 
 .warning {
