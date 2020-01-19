@@ -25,6 +25,8 @@ namespace PushCenter.Bll.Push
 
         #endregion
 
+        private readonly PushCenterDbContext _dbContext;
+
         private readonly ILogger<PushClient> _logger;
         private readonly IMetricsRoot _metrics;
         private readonly VapidAuthentication _vapidAuthentication;
@@ -32,10 +34,12 @@ namespace PushCenter.Bll.Push
         public PushClient(IHttpClientFactory client,
                           IOptions<PushApiOptions> options,
                           IMetricsRoot metrics,
+                          PushCenterDbContext dbContext,
                           ILogger<PushClient> logger) : base(client.CreateClient())
         {
             _logger = logger;
             _metrics = metrics;
+            _dbContext = dbContext;
 
             _vapidAuthentication = new VapidAuthentication(options.Value.PublicKey, options.Value.PrivateKey)
             {
@@ -59,6 +63,14 @@ namespace PushCenter.Bll.Push
                 catch (PushServiceClientException e)
                 {
                     _logger.LogError(e, "Failed to send Notification to '{endpoint}'", subscription.Endpoint);
+
+                    if (e.Message == "Gone")
+                    {
+                        _logger.LogInformation("Removing gone subscription '{endpoint}'", subscription.Endpoint);
+                        var toDelete = _dbContext.Subscriptions.Where(s => s.Endpoint == subscription.Endpoint);
+                        _dbContext.RemoveRange(toDelete);
+                        await _dbContext.SaveChangesAsync();
+                    }
                 }
             }
         }

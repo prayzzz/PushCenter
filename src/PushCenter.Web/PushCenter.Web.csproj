@@ -2,21 +2,21 @@
     <Import Project="..\..\build\web.targets" />
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <RuntimeIdentifiers>win10-x64;linux-x64</RuntimeIdentifiers>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.2.0" />
         <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="3.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
-        <PackageReference Include="Serilog.AspNetCore" Version="3.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
+        <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
         <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.0.0-rc4" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.0.0" />
     </ItemGroup>
 
     <ItemGroup>
