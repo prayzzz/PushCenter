@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Lib.Net.Http.WebPush;
 using Microsoft.Extensions.Logging;
+using PushCenter.Shared;
 
 namespace PushCenter.Bll.Subscriptions
 {

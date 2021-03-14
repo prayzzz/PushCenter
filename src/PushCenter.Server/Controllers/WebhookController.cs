@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using PushCenter.Bll.Push;
 using PushCenter.Bll.Subscriptions;
 using PushCenter.Server.Models;
+using PushCenter.Shared;
 
 namespace PushCenter.Server.Controllers
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Lib.Net.Http.WebPush;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using PushCenter.Bll.Subscriptions;
+using PushCenter.Shared;
 
 namespace PushCenter.Bll.Push
 {
@@ -18,12 +18,12 @@ namespace PushCenter.Bll.Push
 
     public class PushMessage
     {
-        private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
+        private static readonly JsonSerializerSettings JsonSerializerSettings = new()
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
 
-        private static readonly Dictionary<SubscriptionType, string> DefaultTypeIcon = new Dictionary<SubscriptionType, string>
+        private static readonly Dictionary<SubscriptionType, string> DefaultTypeIcon = new()
         {
             { SubscriptionType.Server, "/image/push-icons/server.png" },
             { SubscriptionType.SmartHome, "/image/push-icons/smart-home.png" }

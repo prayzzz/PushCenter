@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PushCenter.Bll.Common;
 using PushCenter.Bll.Subscriptions;
+using PushCenter.Shared;
 
 namespace PushCenter.Server.Controllers
 {
@@ -50,15 +51,8 @@ namespace PushCenter.Server.Controllers
             return Content(_pushApiOptions.PublicKey, "text/plain");
         }
 
-        [HttpGet("subscription-types")]
-        public IActionResult GetSubscriptionTypes()
-        {
-            return new JsonResult(_subscriptionTypeService.GetSubscriptionTypes());
-        }
-
         [HttpPost]
-        public async Task<IActionResult> Subscribe([FromQuery] SubscriptionType type,
-            [FromBody] PushSubscription subscription)
+        public async Task<IActionResult> Subscribe([FromQuery] SubscriptionType type, [FromBody] PushSubscription subscription)
         {
             if (type == SubscriptionType.None)
             {

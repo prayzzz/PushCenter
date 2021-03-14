@@ -1,3 +1,5 @@
+using PushCenter.Shared;
+
 namespace PushCenter.Bll.Subscriptions
 {
     public class Subscription : Entity

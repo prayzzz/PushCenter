@@ -1,4 +1,7 @@
 ﻿@page "/"
+@using PushCenter.Shared
+
+@inject IJSRuntime JsRuntime
 
 <Heading1>Subscriptions</Heading1>
 
@@ -18,26 +21,79 @@
         </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-        <tr>
-            <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 h-10 w-10">
-                        <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=4&amp;w=256&amp;h=256&amp;q=60" alt="">
-                    </div>
-                    <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-900">
-                            Jane Cooper
+        @foreach (var subscriptionType in Enum.GetValues<SubscriptionType>().Where(t => t != SubscriptionType.None))
+        {
+            <tr>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10">
+                            <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=4&amp;w=256&amp;h=256&amp;q=60" alt="">
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-900">
+                                @subscriptionType
+                            </div>
                         </div>
                     </div>
-                </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap w-1">
-                <Button>Subscribe</Button>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap w-1">
-                <Button>Test</Button>
-            </td>
-        </tr>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap w-1">
+                    <Button>Subscribe</Button>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap w-1">
+                    <Button>Test</Button>
+                </td>
+            </tr>
+        }
         </tbody>
     </table>
 </div>
+
+@code
+{
+    private IEnumerable<SubscriptionType> _activeSubscriptions;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _activeSubscriptions = await FindSubscriptions();
+    }
+
+    //
+    // private async Task SubscribeToNotifications(NotificationSubscription subscription)
+    // {
+    //     var response = await Http.PutAsJsonAsync("notifications/subscribe", subscription);
+    //     response.EnsureSuccessStatusCode();
+    // }
+
+    private async Task<IEnumerable<SubscriptionType>> FindSubscriptions()
+    {
+        var endpoint = await JsRuntime.InvokeAsync<string>("blazorPushNotifications.getCurrentEndpoint");
+        if (endpoint == null)
+        {
+            Console.WriteLine("No PushNotification subscription found");
+            return Enumerable.Empty<SubscriptionType>();
+        }
+
+        var response = await Http.PutAsJsonAsync("api/subscription/find", endpoint);
+        response.EnsureSuccessStatusCode();
+
+        var activeSubscriptions = await response.Content.ReadFromJsonAsync<List<SubscriptionType>>();
+        Console.WriteLine($"Active PushNotificationSubscriptions {activeSubscriptions}");
+        return activeSubscriptions;
+    }
+
+    // async Task RequestNotificationSubscriptionAsync()
+    // {
+    //     var subscription = await JsRuntime.InvokeAsync<NotificationSubscription>("blazorPushNotifications.requestSubscription");
+    //     if (subscription != null)
+    //     {
+    //         try
+    //         {
+    //             await SubscribeToNotifications(subscription);
+    //         }
+    //         catch (AccessTokenNotAvailableException ex)
+    //         {
+    //             ex.Redirect();
+    //         }
+    //     }
+    // }
+}
