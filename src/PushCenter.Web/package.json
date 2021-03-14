@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.8",
+    "postcss-cli": "^8.3.1",
+    "tailwindcss": "^2.0.3"
+  },
+  "scripts": {
+    "buildcss": "postcss wwwroot/css/app.css -o wwwroot/css/app.min.css",
+    "watchcss": "postcss -w wwwroot/css/app.css -o wwwroot/css/app.min.css"
+  }
+}

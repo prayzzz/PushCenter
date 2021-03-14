@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: pushcenter
+      POSTGRES_USER: pushcenter
+      POSTGRES_PASSWORD: pushcenter
+    ports:
+    - "5432:5432"
