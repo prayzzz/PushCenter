@@ -1,4 +1,4 @@
-namespace PushCenter.Bll.Subscriptions
+﻿namespace PushCenter.Shared
 {
     public enum SubscriptionType
     {
